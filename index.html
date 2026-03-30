@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- FOUC 방지 인라인 스크립트 -->
+    <script>
+      (function() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홍길동 | Frontend Developer 포트폴리오</title>
+
+    <!-- SEO 메타 태그 -->
+    <meta name="description" content="홍길동 Frontend Developer의 포트폴리오 웹사이트. 프로젝트, 기술 스택, 경력 경험을 소개합니다.">
+    <meta name="keywords" content="Frontend Developer, Web Developer, JavaScript, React, Tailwind CSS">
+    <meta name="author" content="홍길동">
+    <meta property="og:title" content="홍길동 | Frontend Developer 포트폴리오">
+    <meta property="og:description" content="반응형 웹 개발자 홍길동의 포트폴리오 웹사이트">
+    <meta property="og:url" content="https://honggildong.dev">
+    <meta property="og:type" content="website">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        },
+                        zinc: {
+                            50: '#fafafa',
+                            100: '#f4f4f5',
+                            200: '#e4e4e7',
+                            700: '#3f3f46',
+                            800: '#27272a',
+                            900: '#18181b',
+                            950: '#09090b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 커스텀 CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-zinc-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 font-sans antialiased transition-colors duration-300">
+
+    <!-- ===== 헤더 & 네비게이션 ===== -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- 로고/이름 -->
+            <div class="flex items-center">
+                <a href="#hero" class="text-2xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent hover:from-primary-600 hover:to-primary-800 transition-all">
+                    HGD
+                </a>
+            </div>
+
+            <!-- 데스크톱 메뉴 -->
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#about" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium">About</a>
+                <a href="#skills" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium">Skills</a>
+                <a href="#projects" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium">Projects</a>
+                <a href="#contact" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium">Contact</a>
+                <!-- 다크모드 토글 버튼 -->
+                <button id="darkModeToggleBtn" class="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors" aria-label="다크모드 토글">
+                    <i id="darkModeIcon" class="fas fa-moon text-slate-700 dark:text-zinc-300 text-lg"></i>
+                </button>
+            </div>
+
+            <!-- 모바일 메뉴 버튼 및 다크모드 토글 -->
+            <div class="md:hidden flex items-center gap-4">
+                <!-- 다크모드 토글 버튼 -->
+                <button id="darkModeToggleBtn" class="w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors" aria-label="다크모드 토글">
+                    <i id="darkModeIcon" class="fas fa-moon text-slate-700 dark:text-zinc-300 text-lg"></i>
+                </button>
+                <!-- 모바일 버거 버튼 -->
+                <button id="menuToggleBtn" class="text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors" aria-label="메뉴 토글">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 모바일 드롭다운 메뉴 -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-700">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-4">
+                <a href="#about" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium py-2">About</a>
+                <a href="#skills" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium py-2">Skills</a>
+                <a href="#projects" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium py-2">Projects</a>
+                <a href="#contact" class="nav-link text-slate-700 dark:text-zinc-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors font-medium py-2">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== 메인 콘텐츠 ===== -->
+    <main>
+
+        <!-- Hero 섹션 -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 via-primary-500 to-indigo-700 dark:from-zinc-900 dark:via-primary-900 dark:to-zinc-950 text-white pt-16 py-24 overflow-hidden">
+            <!-- 도트 패턴 배경 -->
+            <div class="hero-dot-pattern absolute inset-0 opacity-20"></div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- 텍스트 -->
+                    <div class="animate-on-scroll">
+                        <h1 class="text-5xl sm:text-6xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-primary-100 to-white bg-clip-text text-transparent">
+                            홍길동
+                        </h1>
+                        <p class="text-xl sm:text-2xl text-indigo-100 mb-8 font-light">
+                            Frontend Developer
+                        </p>
+                        <p class="text-lg text-indigo-200 mb-10 leading-relaxed max-w-lg">
+                            React와 Tailwind CSS를 사용하여 아름답고 반응형 웹사이트를 만드는 개발자입니다. 사용자 중심의 설계와 깔끔한 코드를 추구합니다.
+                        </p>
+                        <div class="flex gap-4 flex-wrap">
+                            <a href="#projects" class="inline-block bg-white text-primary-600 px-8 py-3 rounded-xl font-semibold hover:bg-slate-100 hover:shadow-lg transition-all duration-300">
+                                프로젝트 보기
+                            </a>
+                            <a href="#contact" class="inline-block border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-primary-600 hover:shadow-lg transition-all duration-300">
+                                연락하기
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 프로필 이미지 -->
+                    <div class="flex justify-center animate-on-scroll">
+                        <div class="relative w-64 h-64 md:w-72 md:h-72">
+                            <div class="absolute inset-0 bg-white rounded-full opacity-20 blur-2xl"></div>
+                            <img src="https://via.placeholder.com/300/4F46E5/FFFFFF?text=Profile+Image" alt="홍길동 프로필 사진" class="w-full h-full object-cover rounded-full border-4 border-white shadow-2xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 아래로 스크롤 화살표 -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i class="fas fa-chevron-down text-white text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- About 섹션 -->
+        <section id="about" class="py-24 bg-white dark:bg-zinc-950">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-4 animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                        About Me
+                    </h2>
+                    <p class="text-lg text-slate-600 dark:text-zinc-400">
+                        저에 대해 알아보세요
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 mb-16">
+                    <!-- 소개 텍스트 -->
+                    <div class="animate-on-scroll">
+                        <h3 class="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">
+                            자기소개
+                        </h3>
+                        <p class="text-lg text-slate-600 dark:text-zinc-400 leading-relaxed mb-6">
+                            안녕하세요! 저는 3년 이상의 경력을 가진 Frontend 개발자입니다. HTML, CSS, JavaScript부터 시작하여 React와 현대적인 웹 기술을 활용하여 다양한 프로젝트를 완성했습니다.
+                        </p>
+                        <p class="text-lg text-slate-600 dark:text-zinc-400 leading-relaxed">
+                            사용자 경험을 최우선으로 생각하며, 깔끔하고 유지보수하기 좋은 코드를 작성하는 것을 목표로 합니다. 새로운 기술 학습과 자기계발을 지속적으로 추구하고 있습니다.
+                        </p>
+                    </div>
+
+                    <!-- 경력 포인트 카드 -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- 카드 1 -->
+                        <div class="bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-zinc-900 dark:to-zinc-800 p-6 rounded-lg border border-primary-200 dark:border-zinc-700 stat-card-glow animate-on-scroll">
+                            <div class="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2">3+</div>
+                            <p class="text-slate-600 dark:text-zinc-200 font-semibold">년 경력</p>
+                            <p class="text-sm text-slate-500 dark:text-zinc-400 mt-2">Frontend Development</p>
+                        </div>
+
+                        <!-- 카드 2 -->
+                        <div class="bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-zinc-900 dark:to-zinc-800 p-6 rounded-lg border border-primary-200 dark:border-zinc-700 stat-card-glow animate-on-scroll">
+                            <div class="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2">20+</div>
+                            <p class="text-slate-600 dark:text-zinc-200 font-semibold">완료 프로젝트</p>
+                            <p class="text-sm text-slate-500 dark:text-zinc-400 mt-2">웹사이트 & 앱</p>
+                        </div>
+
+                        <!-- 카드 3 -->
+                        <div class="bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-zinc-900 dark:to-zinc-800 p-6 rounded-lg border border-primary-200 dark:border-zinc-700 stat-card-glow animate-on-scroll">
+                            <div class="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2">100%</div>
+                            <p class="text-slate-600 dark:text-zinc-200 font-semibold">만족도</p>
+                            <p class="text-sm text-slate-500 dark:text-zinc-400 mt-2">클라이언트 평가</p>
+                        </div>
+
+                        <!-- 카드 4 -->
+                        <div class="bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-zinc-900 dark:to-zinc-800 p-6 rounded-lg border border-primary-200 dark:border-zinc-700 stat-card-glow animate-on-scroll">
+                            <div class="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2">7+</div>
+                            <p class="text-slate-600 dark:text-zinc-200 font-semibold">기술 스택</p>
+                            <p class="text-sm text-slate-500 dark:text-zinc-400 mt-2">활용 가능</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 이력서 다운로드 버튼 -->
+                <div class="flex justify-center animate-on-scroll">
+                    <a href="#" class="inline-flex items-center gap-2 bg-primary-600 dark:bg-primary-500 text-white px-8 py-3 rounded-xl font-semibold hover:bg-primary-700 dark:hover:bg-primary-600 hover:shadow-lg transition-all duration-300">
+                        <i class="fas fa-download"></i>
+                        이력서 다운로드
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills 섹션 -->
+        <section id="skills" class="py-24 bg-zinc-50 dark:bg-zinc-900">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                        My Skills
+                    </h2>
+                    <p class="text-lg text-slate-600 dark:text-zinc-400">
+                        다양한 기술을 다루고 있습니다
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- Frontend Skills -->
+                    <div class="animate-on-scroll">
+                        <h3 class="text-2xl font-semibold mb-8 text-slate-900 dark:text-white">Frontend</h3>
+
+                        <!-- 스킬 1: HTML/CSS -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">HTML/CSS</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">95%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="95%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 스킬 2: JavaScript -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">JavaScript</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">90%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="90%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 스킬 3: React -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">React</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">85%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="85%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 스킬 4: Tailwind CSS -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">Tailwind CSS</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">90%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="90%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Backend & Tools Skills -->
+                    <div class="animate-on-scroll">
+                        <h3 class="text-2xl font-semibold mb-8 text-slate-900 dark:text-white">Backend & Tools</h3>
+
+                        <!-- 스킬 5: Node.js -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">Node.js</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">70%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="70%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 스킬 6: Git -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">Git</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">85%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="85%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 스킬 7: Figma -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">Figma</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">75%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="75%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 스킬 8: TypeScript -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300">TypeScript</span>
+                                <span class="text-primary-600 dark:text-primary-400 font-semibold">80%</span>
+                            </div>
+                            <div class="skill-bar bg-slate-200 dark:bg-zinc-700 h-2 rounded-full overflow-hidden">
+                                <div class="skill-progress skill-progress-gradient h-full rounded-full transition-all duration-1000" data-width="80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects 섹션 -->
+        <section id="projects" class="py-24 bg-white dark:bg-zinc-950">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                        Featured Projects
+                    </h2>
+                    <p class="text-lg text-slate-600 dark:text-zinc-400">
+                        완성한 프로젝트들입니다
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- 프로젝트 1 -->
+                    <div class="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-zinc-700 hover:shadow-xl dark:hover:shadow-lg transition-shadow duration-300 animate-on-scroll">
+                        <div class="relative overflow-hidden bg-slate-200 dark:bg-zinc-800 h-48">
+                            <img src="https://via.placeholder.com/400x300/6366F1/FFFFFF?text=E-Commerce" alt="쇼핑몰 프로젝트" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-2 text-slate-900 dark:text-white">쇼핑몰 반응형 웹</h3>
+                            <p class="text-slate-600 dark:text-zinc-400 mb-4 text-sm leading-relaxed">
+                                React와 Tailwind CSS를 사용한 현대적인 이-커머스 플랫폼. 장바구니 기능, 결제 통합, 반응형 디자인 포함
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">React</span>
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">Tailwind</span>
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">JavaScript</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <a href="#" class="flex-1 text-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold text-sm">
+                                    <i class="fab fa-github mr-2"></i>Code
+                                </a>
+                                <a href="#" class="flex-1 text-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold text-sm">
+                                    <i class="fas fa-external-link-alt mr-2"></i>Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 프로젝트 2 -->
+                    <div class="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-zinc-700 hover:shadow-xl dark:hover:shadow-lg transition-shadow duration-300 animate-on-scroll">
+                        <div class="relative overflow-hidden bg-slate-200 dark:bg-zinc-800 h-48">
+                            <img src="https://via.placeholder.com/400x300/6366F1/FFFFFF?text=Weather+App" alt="날씨 대시보드" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-2 text-slate-900 dark:text-white">날씨 대시보드 앱</h3>
+                            <p class="text-slate-600 dark:text-zinc-400 mb-4 text-sm leading-relaxed">
+                                실시간 날씨 API를 활용한 인터랙티브 대시보드. 위치 기반 날씨 조회, 주간 예보, 세련된 UI
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">JavaScript</span>
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">API</span>
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">CSS</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <a href="#" class="flex-1 text-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold text-sm">
+                                    <i class="fab fa-github mr-2"></i>Code
+                                </a>
+                                <a href="#" class="flex-1 text-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold text-sm">
+                                    <i class="fas fa-external-link-alt mr-2"></i>Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 프로젝트 3 -->
+                    <div class="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-zinc-700 hover:shadow-xl dark:hover:shadow-lg transition-shadow duration-300 animate-on-scroll">
+                        <div class="relative overflow-hidden bg-slate-200 dark:bg-zinc-800 h-48">
+                            <img src="https://via.placeholder.com/400x300/6366F1/FFFFFF?text=Blog+Platform" alt="블로그 플랫폼" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold mb-2 text-slate-900 dark:text-white">개인 블로그 플랫폼</h3>
+                            <p class="text-slate-600 dark:text-zinc-400 mb-4 text-sm leading-relaxed">
+                                마크다운 지원, 카테고리 분류, 검색 기능이 있는 개인 블로그. 정적 사이트 생성 기술 활용
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">Next.js</span>
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">Markdown</span>
+                                <span class="inline-block bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">React</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <a href="#" class="flex-1 text-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold text-sm">
+                                    <i class="fab fa-github mr-2"></i>Code
+                                </a>
+                                <a href="#" class="flex-1 text-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold text-sm">
+                                    <i class="fas fa-external-link-alt mr-2"></i>Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact 섹션 -->
+        <section id="contact" class="py-24 bg-slate-900 dark:bg-zinc-950 text-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-4xl font-bold text-white mb-2">
+                        Get In Touch
+                    </h2>
+                    <p class="text-lg text-slate-300 dark:text-zinc-400">
+                        연락하고 싶으신가요?
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 mb-12">
+                    <!-- 이메일 -->
+                    <div class="bg-slate-800 dark:bg-zinc-900 rounded-lg p-8 text-center hover:bg-slate-700 dark:hover:bg-zinc-800 transition-colors animate-on-scroll">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full mb-4">
+                            <i class="fas fa-envelope text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-white">Email</h3>
+                        <a href="mailto:honggildong@example.com" class="text-slate-400 dark:text-zinc-400 hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
+                            honggildong@example.com
+                        </a>
+                    </div>
+
+                    <!-- GitHub -->
+                    <div class="bg-slate-800 dark:bg-zinc-900 rounded-lg p-8 text-center hover:bg-slate-700 dark:hover:bg-zinc-800 transition-colors animate-on-scroll">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full mb-4">
+                            <i class="fab fa-github text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-white">GitHub</h3>
+                        <a href="https://github.com/honggildong" target="_blank" rel="noopener noreferrer" class="text-slate-400 dark:text-zinc-400 hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
+                            github.com/honggildong
+                        </a>
+                    </div>
+
+                    <!-- LinkedIn -->
+                    <div class="bg-slate-800 dark:bg-zinc-900 rounded-lg p-8 text-center hover:bg-slate-700 dark:hover:bg-zinc-800 transition-colors animate-on-scroll">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-600 dark:bg-primary-500 rounded-full mb-4">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-white">LinkedIn</h3>
+                        <a href="https://linkedin.com/in/honggildong" target="_blank" rel="noopener noreferrer" class="text-slate-400 dark:text-zinc-400 hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
+                            linkedin.com/in/honggildong
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 소셜 링크 바 -->
+                <div class="flex justify-center gap-6 animate-on-scroll">
+                    <!-- GitHub -->
+                    <a href="https://github.com/honggildong" target="_blank" rel="noopener noreferrer" aria-label="GitHub"
+                        class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-700 hover:bg-primary-600 text-white transition-colors">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <!-- YouTube -->
+                    <a href="https://youtube.com/@honggildong" target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+                        class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-700 hover:bg-red-600 text-white transition-colors">
+                        <i class="fab fa-youtube text-xl"></i>
+                    </a>
+                    <!-- Instagram -->
+                    <a href="https://instagram.com/honggildong" target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                        class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-700 hover:bg-pink-600 text-white transition-colors">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/in/honggildong" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+                        class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-700 hover:bg-blue-600 text-white transition-colors">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="bg-slate-950 dark:bg-zinc-950 text-slate-400 dark:text-zinc-500 py-8">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <!-- 저작권 -->
+                <p class="text-center md:text-left">
+                    © 2024 홍길동. All rights reserved.
+                </p>
+
+                <!-- 맨 위로 버튼 -->
+                <button id="scrollToTopBtn" class="hidden w-10 h-10 flex items-center justify-center rounded-full bg-primary-600 text-white hover:bg-primary-700 transition-colors" aria-label="맨 위로 이동">
+                    <i class="fas fa-arrow-up text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 자바스크립트 -->
+    <script src="js/script.js"></script>
+</body>
+</html>

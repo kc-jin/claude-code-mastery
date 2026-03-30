@@ -1,0 +1,416 @@
+/* ===================================
+   전역 스타일 및 변수
+   =================================== */
+
+:root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #818cf8;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+}
+
+/* 다크모드 CSS 변수 */
+.dark {
+    --text-dark: #f4f4f5;
+    --text-light: #a1a1a1;
+    --bg-light: #09090b;
+    --border-color: #3f3f46;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', 'Noto Sans KR', sans-serif;
+    color: var(--text-dark);
+    background-color: #ffffff;
+    line-height: 1.6;
+}
+
+/* ===================================
+   스크롤바 커스텀
+   =================================== */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* 다크모드 스크롤바 */
+.dark ::-webkit-scrollbar-track {
+    background: #18181b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #6366f1;
+}
+
+/* ===================================
+   네비게이션 스타일
+   =================================== */
+
+#navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+/* 다크 모드 네비게이션 */
+.dark #navbar {
+    background-color: rgba(9, 9, 11, 0.85);
+    backdrop-filter: blur(10px);
+}
+
+/* 스크롤 시 네비게이션 스타일 변경 */
+#navbar.scrolled {
+    background-color: rgba(255, 255, 255, 0.98);
+    border-bottom-color: var(--border-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.dark #navbar.scrolled {
+    background-color: rgba(9, 9, 11, 0.95);
+    border-bottom-color: #3f3f46;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* 활성 네비게이션 링크 */
+.nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        width: 0;
+        left: 50%;
+    }
+    to {
+        width: 100%;
+        left: 0;
+    }
+}
+
+/* 모바일 메뉴 */
+#mobileMenu {
+    animation: slideDown 0.3s ease;
+    max-height: 500px;
+}
+
+#mobileMenu.hidden {
+    animation: slideUp 0.3s ease;
+    max-height: 0;
+}
+
+@keyframes slideDown {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+    to {
+        max-height: 500px;
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        max-height: 500px;
+        opacity: 1;
+    }
+    to {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+/* ===================================
+   스크롤 애니메이션
+   =================================== */
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    will-change: opacity, transform;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===================================
+   Hero 도트 패턴
+   =================================== */
+
+.hero-dot-pattern {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* ===================================
+   Skills 섹션 애니메이션
+   =================================== */
+
+.skill-bar {
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-progress {
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.skill-progress.animated {
+    width: var(--skill-width, 0%);
+}
+
+/* 스킬 진행률 바 그라데이션 */
+.skill-progress-gradient {
+    background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+}
+
+/* 진행률 바 빛나는 효과 */
+.skill-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ===================================
+   배경 전환 애니메이션
+   =================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   버튼 스타일
+   =================================== */
+
+button,
+a.btn {
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+button:active,
+a.btn:active {
+    transform: scale(0.98);
+}
+
+/* ===================================
+   다크 통계 카드 글로우 호버 효과
+   =================================== */
+
+.stat-card-glow {
+    transition: box-shadow 0.3s ease;
+}
+
+.dark .stat-card-glow:hover {
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15), 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ===================================
+   다크모드 토글 아이콘 애니메이션
+   =================================== */
+
+#darkModeIcon {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s;
+}
+
+#darkModeIcon.switching {
+    transform: rotate(180deg) scale(0.5);
+    opacity: 0;
+}
+
+/* ===================================
+   카드 호버 효과
+   =================================== */
+
+.hover\:shadow-xl {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hover\:shadow-xl:hover {
+    transform: translateY(-4px);
+}
+
+/* ===================================
+   맨 위로 버튼 스타일
+   =================================== */
+
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex !important;
+    animation: slideInRight 0.3s ease;
+    z-index: 40;
+}
+
+#scrollToTopBtn.hidden {
+    animation: slideOutRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+}
+
+/* ===================================
+   반응형 수정
+   =================================== */
+
+@media (max-width: 640px) {
+    #navbar {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    h1 {
+        font-size: 2.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.875rem !important;
+    }
+
+    .animate-on-scroll {
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+}
+
+/* ===================================
+   접근성 개선
+   =================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 포커스 스타일 */
+a:focus,
+button:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ===================================
+   폰트 설정
+   =================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', 'Noto Sans KR', sans-serif;
+    font-weight: 600;
+}
+
+/* ===================================
+   기타 유틸리티
+   =================================== */
+
+.fade-in {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+/* 브라우저 호환성 */
+@supports (backdrop-filter: blur(10px)) {
+    #navbar {
+        background-color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+    }
+
+    #navbar.scrolled {
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+}

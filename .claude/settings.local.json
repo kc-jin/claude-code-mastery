@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "WebSearch",
+      "WebFetch(domain:kosis.kr)",
+      "WebFetch(domain:datacookbook.kr)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:kess.kedi.re.kr)",
+      "WebFetch(domain:opendata.hira.or.kr)",
+      "WebFetch(domain:stat.me.go.kr)",
+      "WebFetch(domain:stat.mcee.go.kr)"
+    ]
+  }
+}
